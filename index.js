@@ -1,12 +1,12 @@
 const { Telegraf } = require("telegraf");
-const ytdl = require("ytdl-core"); // Impor library yang baru diinstal
+// const ytdl = require("ytdl-core"); // <-- HAPUS BARIS INI
 require("dotenv").config();
 
 // --- Konfigurasi ---
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const WEBAPP_URL = process.env.WEBAPP_URL;
-const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/ytplay';
-const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/Kangyanpwk';
+const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/ytplas';
+const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/Khunaypwk';
 const WELCOME_IMAGE_URL = 'https://placehold.co/1280x720/FF0000/FFFFFF/png?text=YouTube+WebApp&font=roboto';
 
 // --- Perintah /start (Tidak berubah) ---
@@ -29,50 +29,8 @@ bot.start((ctx) => {
 
 
 // =======================================================
-// ===== HANDLER UNTUK TOMBOL DOWNLOAD (KODE BARU) =====
+// ===== SELURUH BLOK 'bot.on('web_app_data')' DIHAPUS =====
 // =======================================================
-// Bot akan mendengarkan setiap kali Web App mengirim data
-bot.on('web_app_data', async (ctx) => {
-  try {
-    // 1. Ambil data yang dikirim dari Web App
-    const webAppData = ctx.webAppData.data.toString();
-    const data = JSON.parse(webAppData);
-
-    // 2. Periksa apakah ini adalah aksi 'download'
-    if (data.action === 'download') {
-      const videoId = data.videoId;
-      const videoTitle = data.title;
-      const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-
-      console.log(`Menerima permintaan download untuk: ${videoTitle} (ID: ${videoId})`);
-
-      // 3. Kirim pesan konfirmasi ke pengguna
-      const processingMessage = await ctx.reply(`Sedang memproses permintaan download untuk:\n<b>${videoTitle}</b>...\n\nMohon tunggu sebentar 🙏`, { parse_mode: 'HTML' });
-
-      // 4. Proses download menggunakan ytdl-core
-      // Kita akan men-stream video agar tidak membebani memori server
-      const stream = ytdl(videoUrl, {
-        quality: 'highest', // Anda bisa memilih kualitas, misal: '18' untuk 360p mp4
-        filter: 'videoandaudio'
-      });
-      
-      const safeFilename = `${videoTitle.replace(/[\\/:*?"<>|]/g, '')}.mp4`;
-
-      // 5. Kirim video ke pengguna
-      await ctx.replyWithVideo(
-        { source: stream, filename: safeFilename },
-        { caption: `✅ Download selesai!\n\n${videoTitle}` }
-      );
-
-      // Hapus pesan "sedang memproses" setelah selesai
-      await ctx.deleteMessage(processingMessage.message_id);
-
-    }
-  } catch (error) {
-    console.error("Error saat memproses web_app_data:", error);
-    ctx.reply(`Maaf, terjadi kesalahan saat mencoba mengunduh video. Coba lagi nanti.\n\nError: ${error.message}`);
-  }
-});
 
 
 // Jalankan bot
