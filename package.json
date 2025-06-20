@@ -1,13 +1,13 @@
-{
-  "name": "youtube-webapp-bot",
+"name": "telegram_bot",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node bot.js"
   },
   "dependencies": {
-    "dotenv": "^16.3.1",
-    "telegraf": "^4.16.2",
-    "ytdl-core": "^4.16.3"
+    "dotenv": "^16.4.5",
+    "telegraf": "^4.16.3",
+    "ytdl-core": "^4.11.5"  // <-- Versi sudah diperbaiki
   }
 }
