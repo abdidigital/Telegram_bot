@@ -1,17 +1,26 @@
 const { Telegraf } = require("telegraf");
 const ytdl = require("ytdl-core");
+const express = require('express'); // Impor express
 require("dotenv").config();
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
+// --- Konfigurasi ---
+const BOT_TOKEN = process.env.BOT_TOKEN;
 const WEBAPP_URL = process.env.WEBAPP_URL;
 const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/username_anda';
 const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/username_admin_anda';
-const WELCOME_IMAGE_URL = 'https://placehold.co/1280x720/FF0000/FFFFFF/png?text=YouTube+WebApp&font=roboto';
+// URL server Anda akan disediakan oleh Railway secara otomatis
+const SERVER_URL = `https://${process.env.RAILWAY_STATIC_URL}`; 
 
+if (!BOT_TOKEN) throw new Error('"BOT_TOKEN" env var is required!');
+
+const bot = new Telegraf(BOT_TOKEN);
+const app = express(); // Buat instance server express
+
+// --- Logika Bot (Tidak Berubah) ---
 bot.start((ctx) => {
-    const caption = `<b>Selamat Datang di YouTube WebApp Bot!</b>\n\n<i>Temukan dan putar video YouTube favoritmu langsung dari Telegram.</i>\n\nKlik tombol di bawah untuk memulai petualanganmu atau dukung kami melalui donasi. Terima kasih! 🙏`;
+    const caption = `<b>Selamat Datang di YouTube WebApp Bot!</b>\n\n<i>Temukan dan putar video YouTube favoritmu langsung dari Telegram.</i>`;
     ctx.replyWithPhoto(
-        { url: WELCOME_IMAGE_URL },
+        'https://placehold.co/1280x720/FF0000/FFFFFF/png?text=YouTube+WebApp&font=roboto',
         {
             caption: caption,
             parse_mode: 'HTML',
@@ -50,6 +59,19 @@ bot.on('web_app_data', async (ctx) => {
   }
 });
 
-bot.launch();
-console.log("🤖 Bot aktif...");
+// --- Pengaturan Webhook ---
+// Gunakan middleware dari Telegraf untuk memproses update dari Telegram
+app.use(bot.webhookCallback(`/webhook`));
 
+// Beritahu Telegram di mana alamat webhook kita
+bot.telegram.setWebhook(`${SERVER_URL}/webhook`);
+
+// Jalankan server express
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🤖 Bot aktif dan berjalan di port ${PORT}`);
+});
+
+// (Perintah bot.launch() tidak lagi digunakan)
+
+                
