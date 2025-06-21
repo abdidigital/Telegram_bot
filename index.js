@@ -9,15 +9,15 @@ if (!BOT_TOKEN) throw new Error('"BOT_TOKEN" env var is required!');
 const bot = new Telegraf(BOT_TOKEN);
 
 const WEBAPP_URL = process.env.WEBAPP_URL;
-const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/username_anda';
-const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/username_admin_anda';
+const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/ytplay';
+const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/Kangyanpwk';
 const WELCOME_IMAGE_URL = 'https://placehold.co/1280x720/FF0000/FFFFFF/png?text=YouTube+WebApp&font=roboto';
 
 // --- Logika Bot ---
 
 // Perintah /start
 bot.start((ctx) => {
-    const caption = `<b>Selamat Datang di YouTube WebApp Bot!</b>\n\n<i>Temukan dan putar video YouTube favoritmu langsung dari Telegram.</i>\n\nKlik tombol di bawah untuk memulai.`;
+    const caption = `<b>Selamat Datang di TeleTube!</b>\n\n<i>Temukan dan putar video YouTube favoritmu langsung dari Telegram tanpa Iklan</i>\n\nKlik tombol di bawah untuk memulai.`;
     ctx.replyWithPhoto(
         { url: WELCOME_IMAGE_URL },
         {
