@@ -1,77 +1,57 @@
 const { Telegraf } = require("telegraf");
-const ytdl = require("ytdl-core");
-const express = require('express'); // Impor express
-require("dotenv").config();
+require("dotenv").config(); // Pastikan Anda sudah menginstal: npm install dotenv
 
 // --- Konfigurasi ---
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const WEBAPP_URL = process.env.WEBAPP_URL;
-const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/username_anda';
+// Ambil token dan URL dari file .env Anda
+const bot = new Telegraf(process.env.BOT_TOKEN);
+
+// URL WAJIB
+const WEBAPP_URL = process.env.WEBAPP_URL; 
+
+// URL OPSIONAL (Gunakan URL default jika tidak ada di .env)
+const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/ytplay';
 const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/username_admin_anda';
-// URL server Anda akan disediakan oleh Railway secara otomatis
-const SERVER_URL = `https://${process.env.RAILWAY_STATIC_URL}`; 
 
-if (!BOT_TOKEN) throw new Error('"BOT_TOKEN" env var is required!');
+// URL Gambar untuk pesan selamat datang. Anda bisa menggantinya dengan gambar lain.
+const WELCOME_IMAGE_URL = 'https://placehold.co/1280x720/FF0000/FFFFFF/png?text=YouTube+WebApp&font=roboto';
 
-const bot = new Telegraf(BOT_TOKEN);
-const app = express(); // Buat instance server express
+// --- Logika Bot ---
 
-// --- Logika Bot (Tidak Berubah) ---
+// Perintah /start
 bot.start((ctx) => {
-    const caption = `<b>Selamat Datang di YouTube WebApp Bot!</b>\n\n<i>Temukan dan putar video YouTube favoritmu langsung dari Telegram.</i>`;
-    ctx.replyWithPhoto(
-        'https://placehold.co/1280x720/FF0000/FFFFFF/png?text=YouTube+WebApp&font=roboto',
-        {
-            caption: caption,
-            parse_mode: 'HTML',
-            reply_markup: {
-                inline_keyboard: [
-                    [{ text: "🌐 Buka YouTube Player", web_app: { url: WEBAPP_URL } }],
-                    [{ text: "💰 Donasi", url: DONATE_URL }, { text: "💬 Chat Admin", url: ADMIN_URL }],
-                ],
+  // Teks caption dengan format HTML untuk gaya
+  const caption = `<b>Selamat Datang di YouTube WebApp Bot!</b>
+  
+<i>Temukan dan putar video YouTube favoritmu langsung dari Telegram.</i>
+
+Klik tombol di bawah untuk memulai petualanganmu atau dukung kami melalui donasi. Terima kasih! 🙏`;
+
+  // Mengirim pesan dengan foto, caption, dan tombol-tombol inline
+  ctx.replyWithPhoto(
+    { url: WELCOME_IMAGE_URL }, // Sumber gambar
+    {
+      caption: caption,
+      parse_mode: 'HTML', // Mengaktifkan format HTML untuk teks (<b>, <i>, dll.)
+      reply_markup: {
+        inline_keyboard: [
+          // Baris 1: Tombol utama untuk membuka Web App
+          [
+            {
+              text: "🌐 Buka YouTube Player",
+              web_app: { url: WEBAPP_URL },
             },
-        }
-    );
-});
-
-bot.on('web_app_data', async (ctx) => {
-  try {
-    const data = JSON.parse(ctx.webAppData.data.toString());
-    if (data.action === 'download') {
-      const { videoId, title } = data;
-      const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-      console.log(`Menerima permintaan download untuk: ${title}`);
-      
-      const processingMessage = await ctx.reply(`⏳ Memproses: <b>${title}</b>...`, { parse_mode: 'HTML' });
-
-      const stream = ytdl(videoUrl, { quality: 'highest', filter: 'videoandaudio' });
-      const safeFilename = `${title.replace(/[\\/:*?"<>|]/g, '')}.mp4`;
-
-      await ctx.replyWithVideo(
-        { source: stream, filename: safeFilename },
-        { caption: `✅ Selesai!\n\n${title}` }
-      );
-      await ctx.deleteMessage(processingMessage.message_id);
+          ],
+          // Baris 2: Tombol Donasi dan Chat Admin berdampingan
+          [
+            { text: "💰 Donasi", url: DONATE_URL },
+            { text: "💬 Chat Admin", url: ADMIN_URL },
+          ],
+        ],
+      },
     }
-  } catch (error) {
-    console.error("Error memproses web_app_data:", error);
-    ctx.reply(`Maaf, terjadi kesalahan saat mengunduh video: ${error.message}`);
-  }
+  );
 });
 
-// --- Pengaturan Webhook ---
-// Gunakan middleware dari Telegraf untuk memproses update dari Telegram
-app.use(bot.webhookCallback(`/webhook`));
-
-// Beritahu Telegram di mana alamat webhook kita
-bot.telegram.setWebhook(`${SERVER_URL}/webhook`);
-
-// Jalankan server express
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🤖 Bot aktif dan berjalan di port ${PORT}`);
-});
-
-// (Perintah bot.launch() tidak lagi digunakan)
-
-                
+// Jalankan bot
+bot.launch();
+console.log("🤖 Bot aktif...");
