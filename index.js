@@ -25,7 +25,7 @@ bot.start((ctx) => {
             parse_mode: 'HTML',
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "🌐 Buka YouTube Player", web_app: { url: WEBAPP_URL } }],
+                    [{ text: "🌐 NONTON YOUTUBE TANPA IKLAN", web_app: { url: WEBAPP_URL } }],
                     [{ text: "💰 Donasi", url: DONATE_URL }, { text: "💬 Chat Admin", url: ADMIN_URL }],
                 ],
             },
