@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
     "telegraf": "^4.16.3",
     "ytdl-core": "^4.11.5"
   }
 }
+
