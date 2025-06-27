@@ -1,0 +1,7 @@
+# File ini memberitahu Railway untuk menginstal paket sistem tambahan saat build.
+[phases.setup]
+nixPkgs = ["python3", "yt-dlp", "ffmpeg"]
+
+# Menentukan perintah untuk memulai aplikasi Anda.
+[start]
+cmd = "npm run start"
