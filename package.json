@@ -2,9 +2,9 @@
   "name": "telegram_bot",
   "version": "1.0.0",
   "description": "Bot Telegram untuk YouTube WebApp",
-  "main": "script.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node script.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
