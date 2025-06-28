@@ -10,7 +10,7 @@ const bot = new Telegraf(BOT_TOKEN);
 const WEBAPP_URL = process.env.WEBAPP_URL;
 const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/ytplay';
 const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/Kangyanpwk';
-const WELCOME_IMAGE_URL = 'https://i.ibb.co/vj2fVp9/teletube.jpg';
+const WELCOME_IMAGE_URL = 'https://i.ibb.co/27gPb276/teletube.png';
 
 // --- Logika Bot ---
 bot.start(async (ctx) => {
