@@ -1,8 +1,6 @@
-# File ini hanya memberitahu Railway untuk menginstal paket sistem TAMBAHAN.
-# Node.js dan npm akan diinstal secara otomatis karena ada file package.json.
+providers = ["node"]
 [phases.setup]
-nixPkgs = ["python3", "yt-dlp", "ffmpeg"]
-
-# Menentukan perintah untuk memulai aplikasi Anda.
+nixPkgs = ["nodejs_20", "python3", "yt-dlp", "ffmpeg"]
 [start]
 cmd = "npm run start"
+
