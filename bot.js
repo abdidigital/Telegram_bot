@@ -17,7 +17,7 @@ if (!ADMIN_ID) {
 const WEBAPP_URL = process.env.WEBAPP_URL;
 const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/ytplay';
 const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/Kangyanpwk';
-const WELCOME_IMAGE_URL = 'https://i.ibb.co/vj2fVp9/teletube.jpg'; // URL gambar kustom Anda
+const WELCOME_IMAGE_URL = 'https://i.ibb.co/27gPb276/teletube.png'; // URL gambar kustom Anda
 
 // --- Pengaturan Database JSON Sederhana ---
 const DB_FILE = './db.json';
