@@ -1,6 +1,0 @@
-providers = ["node"]
-[phases.setup]
-nixPkgs = ["nodejs_20", "python3", "yt-dlp", "ffmpeg"]
-[start]
-cmd = "npm run start"
-
