@@ -1,7 +1,7 @@
-# File ini memberitahu Railway untuk menginstal semua paket sistem yang kita butuhkan.
+# File ini hanya memberitahu Railway untuk menginstal paket sistem TAMBAHAN.
+# Node.js dan npm akan diinstal secara otomatis karena ada file package.json.
 [phases.setup]
-# Menambahkan nodejs_20 (versi stabil Node.js) dan npm ke dalam daftar.
-nixPkgs = ["nodejs_20", "npm_10", "python3", "yt-dlp", "ffmpeg"]
+nixPkgs = ["python3", "yt-dlp", "ffmpeg"]
 
 # Menentukan perintah untuk memulai aplikasi Anda.
 [start]
