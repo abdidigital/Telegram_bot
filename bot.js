@@ -12,12 +12,12 @@ const DONATE_URL = process.env.DONATE_URL || 'https://saweria.co/ytplay';
 const ADMIN_URL = process.env.ADMIN_URL || 'https://t.me/Kangyanpwk';
 const WELCOME_IMAGE_URL = 'https://i.ibb.co/27gPb276/teletube.png';
 
-// ===== MEMBACA DAFTAR URL IKLAN DARI ENVIRONMENT VARIABLE =====
-// Pisahkan URL berdasarkan koma dan bersihkan spasi
-const AD_URLS = (process.env.AD_URLS || '')
-  .split(',')
-  .map(url => url.trim())
-  .filter(url => url); // Hapus entri yang kosong
+// ===== MEMBACA DAFTAR PESAN IKLAN KUSTOM DARI ENVIRONMENT VARIABLE =====
+// Pisahkan pesan menggunakan '||' sebagai pemisah
+const AD_MESSAGES = (process.env.AD_MESSAGES || '')
+  .split('||')
+  .map(msg => msg.trim())
+  .filter(msg => msg); // Hapus entri yang kosong
 
 // --- Logika Bot ---
 bot.start(async (ctx) => {
@@ -50,14 +50,15 @@ bot.on('web_app_data', async (ctx) => {
       
       const safeFilename = `${title.replace(/[\\/:*?"<>|]/g, '')}.mp4`;
 
-      // ===== LOGIKA BARU UNTUK MENAMBAHKAN IKLAN =====
+      // ===== LOGIKA BARU UNTUK MENAMBAHKAN IKLAN KUSTOM =====
       let finalCaption = `✅ Selesai!\n\n<b>${title}</b>`;
 
-      // Jika ada URL iklan yang tersedia, pilih satu secara acak
-      if (AD_URLS.length > 0) {
-        const randomAdUrl = AD_URLS[Math.floor(Math.random() * AD_URLS.length)];
-        finalCaption += `\n\n---\n📢 Cek juga promo menarik ini:\n${randomAdUrl}`;
-        console.log(`Menambahkan iklan ke caption: ${randomAdUrl}`);
+      // Jika ada pesan iklan yang tersedia, pilih satu secara acak
+      if (AD_MESSAGES.length > 0) {
+        const randomAdMessage = AD_MESSAGES[Math.floor(Math.random() * AD_MESSAGES.length)];
+        // Tambahkan pesan iklan lengkap ke caption
+        finalCaption += `\n\n---\n${randomAdMessage}`;
+        console.log(`Menambahkan iklan ke caption: ${randomAdMessage}`);
       }
       // ===== AKHIR LOGIKA IKLAN =====
 
@@ -67,7 +68,7 @@ bot.on('web_app_data', async (ctx) => {
         { source: ytdlp.stdout, filename: safeFilename },
         { 
             caption: finalCaption,
-            parse_mode: 'HTML' // Pastikan parse_mode HTML aktif untuk link
+            parse_mode: 'HTML' // Pastikan parse_mode HTML aktif untuk link iklan
         }
       );
 
@@ -92,3 +93,4 @@ console.log("🤖 Bot aktif dan berjalan dengan metode Polling...");
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
+    
